@@ -56,7 +56,11 @@ public class Login extends JPanel {
             boolean isRemember = chkRemember.isSelected();
             if (loginMechanics.checkLogin(username, password)) {
                 JOptionPane.showMessageDialog(this, "Welcome, " + username);
-                FormsManager.getInstance().showForm(new SidePanel());
+                try {
+                    FormsManager.getInstance().showForm(new SidePanel());
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
                 if (isRemember) {
                     try {
                         rememberMe.rememberWrite(username, true);

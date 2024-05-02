@@ -1,6 +1,5 @@
 package fatsby.main;
 
-import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.fonts.roboto.FlatRobotoFont;
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
@@ -11,7 +10,7 @@ import fatsby.manager.FormsManager;
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
-import java.net.URL;
+
 
 public class Application extends JFrame {
     public Application() throws IOException {
@@ -23,6 +22,7 @@ public class Application extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(new Dimension(1200, 700));
         setLocationRelativeTo(null);
+        setResizable(false);
         if (rememberMe.checkRemember()){
             setContentPane(new SidePanel());
         }else{

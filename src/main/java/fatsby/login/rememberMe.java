@@ -33,4 +33,17 @@ public class rememberMe {
         }
         return false;
     }
+
+    public static String getUsername() throws IOException {
+        try (BufferedReader br = new BufferedReader(new FileReader("rememberme.txt"));) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] userInfo = line.split(":");
+               return userInfo[0];
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }
