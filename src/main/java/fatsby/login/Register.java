@@ -3,9 +3,11 @@ package fatsby.login;
 import com.formdev.flatlaf.FlatClientProperties;
 import fatsby.manager.FormsManager;
 import net.miginfocom.swing.MigLayout;
+import fatsby.login.loginMechanics;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class Register extends JPanel {
     public Register(){
@@ -17,15 +19,18 @@ public class Register extends JPanel {
         txtPassword = new JPasswordField();
         txtConfirmPassword = new JPasswordField();
         btnRegister = new JButton("Register");
-        invCode = new JTextField();
+        invCodeBox = new JTextField();
         genderBox = new JComboBox<String>(new String[]{"Male", "Female", "Suc vat gay"});
 
+        //Invite codes
+        invCodes.add("admin2312");
+        invCodes.add("admin1004");
 
-
+        //Text fields placeholder texts
         txtUsername.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT,"Enter a badass Username here");
         txtPassword.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT,"Enter your password here");
         txtConfirmPassword.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT,"Re-enter password");
-        invCode.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT,"Enter invite code from other users");
+        invCodeBox.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT,"Enter invite code from other users");
         txtPassword.putClientProperty(FlatClientProperties.STYLE,"" +
                 "showRevealButton:true");
         txtConfirmPassword.putClientProperty(FlatClientProperties.STYLE,"" +
@@ -50,12 +55,42 @@ public class Register extends JPanel {
         panel.add(new JLabel("Confirm Password:"), "gapy 10");
         panel.add(txtConfirmPassword);
         panel.add(new JLabel("Invite Code:"), "gapy 10");
-        panel.add(invCode);
+        panel.add(invCodeBox);
         panel.add(new JLabel("Gender:"), "gapy 10");
         panel.add(genderBox);
         panel.add(btnRegister, "gapy 10");
         panel.add(createLoginLabel(), "gapy 10");
         add(panel);
+
+        //Register mechanic
+        btnRegister.addActionListener(e -> {
+            String username = txtUsername.getText();
+            String password = new String(txtPassword.getPassword());
+            String confirmPassword = new String(txtConfirmPassword.getPassword());
+            String invCode = invCodeBox.getText();
+
+            boolean isValidInvCode = false;
+            for (String code : invCodes) {
+                if (invCode.equals(code)) {
+                    isValidInvCode = true;
+                    break; // Valid invite code found, break out of the loop
+                }
+            }
+
+            if (!isValidInvCode) {
+                JOptionPane.showMessageDialog(null, "Invalid Invite Code");
+                return; // Stop further processing if the invite code is invalid
+            }
+
+            // Check if password and confirm password match
+            if (!password.equals(confirmPassword)) {
+                JOptionPane.showMessageDialog(null, "Password and confirm password do not match");
+                return; // Stop further processing if the passwords don't match
+            } else{
+                loginMechanics.saveRegistrationInfo(username, password);
+                JOptionPane.showMessageDialog(null, "Successfully registered");
+            }
+        });
     }
 
     private Component createLoginLabel(){
@@ -79,6 +114,7 @@ public class Register extends JPanel {
     private JPasswordField txtPassword;
     private JPasswordField txtConfirmPassword;
     private JButton btnRegister;
-    private JTextField invCode;
+    private JTextField invCodeBox;
     private JComboBox genderBox;
+    private ArrayList<String> invCodes = new ArrayList<>();
 }

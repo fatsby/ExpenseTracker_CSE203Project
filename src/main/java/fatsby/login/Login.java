@@ -3,6 +3,7 @@ package fatsby.login;
 import com.formdev.flatlaf.FlatClientProperties;
 import fatsby.manager.FormsManager;
 import net.miginfocom.swing.MigLayout;
+import fatsby.login.loginMechanics;
 
 import javax.swing.*;
 import java.awt.*;
@@ -47,6 +48,17 @@ public class Login extends JPanel {
         panel1.add(btnLogin, "gapy 10");
         panel1.add(createSignUpLabel(), "gapy 10");
         add(panel1);
+
+        //Login mechanic
+        btnLogin.addActionListener(e -> {
+            String username = txtUsername.getText();
+            String password = new String(txtPassword.getPassword());
+            if (loginMechanics.checkLogin(username, password)) {
+                JOptionPane.showMessageDialog(this, "Welcome, " + username);
+            } else{
+                JOptionPane.showMessageDialog(this, "Invalid username or password");
+            }
+        });
     }
 
     private Component createSignUpLabel(){
@@ -65,6 +77,7 @@ public class Login extends JPanel {
         panel.add(regButton);
         return panel;
     }
+
 
     private JTextField txtUsername;
     private JPasswordField txtPassword;
