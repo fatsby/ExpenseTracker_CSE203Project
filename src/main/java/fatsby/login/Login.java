@@ -1,6 +1,7 @@
 package fatsby.login;
 
 import com.formdev.flatlaf.FlatClientProperties;
+import fatsby.manager.FormsManager;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
@@ -56,7 +57,7 @@ public class Login extends JPanel {
         regButton.setContentAreaFilled(false);
         regButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         regButton.addActionListener(e -> {
-
+            FormsManager.getInstance().showForm(new Register());
         });
         JLabel noAccountLabel = new JLabel("Don't have an account?");
 
