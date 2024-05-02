@@ -13,9 +13,7 @@ public class Main extends JFrame {
 
     private JTabbedPane tabbedPane1;
     private JPanel MainPanel;
-    private JLabel expensesLabel;
     private JPanel creditcardPanel;
-    private JPanel expensesPanel;
 
 
     public Main() throws IOException {
