@@ -4,6 +4,8 @@ import com.formdev.flatlaf.FlatClientProperties;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionListener;
 
 public class Login extends JPanel {
     public Login() {
@@ -42,7 +44,25 @@ public class Login extends JPanel {
         panel1.add(txtPassword);
         panel1.add(chkRemember,"grow 0, gapy 10");
         panel1.add(btnLogin, "gapy 10");
+        panel1.add(createSignUpLabel(), "gapy 10");
         add(panel1);
+    }
+
+    private Component createSignUpLabel(){
+        JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0 ,0));
+        panel.putClientProperty(FlatClientProperties.STYLE,"" +
+                "background:null");
+        JButton regButton = new JButton("<html><a href=\"#\">Sign Up</a></html>");
+        regButton.setContentAreaFilled(false);
+        regButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        regButton.addActionListener(e -> {
+
+        });
+        JLabel noAccountLabel = new JLabel("Don't have an account?");
+
+        panel.add(noAccountLabel);
+        panel.add(regButton);
+        return panel;
     }
 
     private JTextField txtUsername;
