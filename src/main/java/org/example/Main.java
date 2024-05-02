@@ -5,16 +5,20 @@ import com.kitfox.svg.app.beans.SVGIcon;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 
 public class Main extends JFrame {
 
     private JTabbedPane tabbedPane1;
     private JPanel MainPanel;
     private JLabel expensesLabel;
-    
+    private JPanel creditcardPanel;
+    private JPanel expensesPanel;
 
-    public Main() {
+
+    public Main() throws IOException {
         setContentPane(MainPanel);
         setTitle("Expense Tracker");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -38,9 +42,10 @@ public class Main extends JFrame {
         settingsIcon.setSvgURI(new File("icons/settings.svg").toURI());
         tabbedPane1.setIconAt(2, settingsIcon);
 
+
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         FlatMacLightLaf.setup();
         Main mainFrame = new Main();
     }
