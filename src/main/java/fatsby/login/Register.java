@@ -3,7 +3,6 @@ package fatsby.login;
 import com.formdev.flatlaf.FlatClientProperties;
 import fatsby.manager.FormsManager;
 import net.miginfocom.swing.MigLayout;
-import fatsby.login.loginMechanics;
 
 import javax.swing.*;
 import java.awt.*;

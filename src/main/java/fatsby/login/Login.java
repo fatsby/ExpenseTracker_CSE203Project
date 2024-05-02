@@ -1,13 +1,13 @@
 package fatsby.login;
 
 import com.formdev.flatlaf.FlatClientProperties;
+import fatsby.main.SidePanel;
 import fatsby.manager.FormsManager;
 import net.miginfocom.swing.MigLayout;
-import fatsby.login.loginMechanics;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionListener;
+import java.io.IOException;
 
 public class Login extends JPanel {
     public Login() {
@@ -53,8 +53,17 @@ public class Login extends JPanel {
         btnLogin.addActionListener(e -> {
             String username = txtUsername.getText();
             String password = new String(txtPassword.getPassword());
+            boolean isRemember = chkRemember.isSelected();
             if (loginMechanics.checkLogin(username, password)) {
                 JOptionPane.showMessageDialog(this, "Welcome, " + username);
+                FormsManager.getInstance().showForm(new SidePanel());
+                if (isRemember) {
+                    try {
+                        rememberMe.rememberWrite(username, true);
+                    } catch (IOException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                }
             } else{
                 JOptionPane.showMessageDialog(this, "Invalid username or password");
             }
