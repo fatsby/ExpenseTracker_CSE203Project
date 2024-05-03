@@ -5,6 +5,7 @@ import fatsby.login.Login;
 import fatsby.login.Register;
 import fatsby.login.rememberMe;
 import fatsby.manager.FormsManager;
+import fatsby.manager.User;
 import net.miginfocom.swing.MigLayout;
 import org.kordamp.ikonli.dashicons.Dashicons;
 import org.kordamp.ikonli.fluentui.FluentUiFilledAL;
@@ -18,6 +19,14 @@ import java.io.IOException;
 
 public class SidePanel extends JPanel {
     public SidePanel() throws IOException {
+        String currentUser = rememberMe.getUsername();
+        if (Login.currentUser != null){
+            user.setUsername(Login.currentUser);
+        } else{
+            user.setUsername(currentUser);
+        }
+        System.out.println(user.getUsername());
+        user.loadMoneyFromDB();
         init();
     }
     private void init() throws IOException {
@@ -57,7 +66,11 @@ public class SidePanel extends JPanel {
             }
             FormsManager.getInstance().showForm(new Login());
         });
-        username.setText("Hello, " + rememberMe.getUsername());
+        if (Login.currentUser != null){
+            username.setText(Login.currentUser);
+        } else{
+            username.setText(rememberMe.getUsername());
+        }
 
         //JTabbedPane
             JTabbedPane tabbedPane = new JTabbedPane();
@@ -84,8 +97,20 @@ public class SidePanel extends JPanel {
             JPanel dashboardPanel = new JPanel(new MigLayout("wrap, fillx"));
             dashboardPanel.add(new JLabel("Your bank accounts"));
             dashboardPanel.add(drawCreditCard(), "width 265, height 175");
+
+            //EXPENSE BUTTON HERE IDIOT
             JButton addExpenseBTN = new JButton("Add Expense");
             dashboardPanel.add(addExpenseBTN, "wrap, gapy 10");
+            addExpenseBTN.addActionListener(e -> {
+                try {
+                    user.addMoney(1000);
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+            });
+
+
+            //PREVIOUS EXPENSE SECTION HERE
             JSeparator separator2 = new JSeparator();
             separator2.setVisible(true);
             separator2.setOrientation(SwingConstants.HORIZONTAL);
@@ -136,7 +161,8 @@ public class SidePanel extends JPanel {
         JLabel bankName = new JLabel("MB BANK");
         bankName.putClientProperty(FlatClientProperties.STYLE, "font: bold +5");
         bankName.setIcon(visaIcon);
-        JLabel moneyLabel = new JLabel("$1000");
+//        JLabel moneyLabel = new JLabel(String.valueOf(user.getMoney())); // MONEY LABEL HERE IDIOT
+        JLabel moneyLabel = new JLabel("$10000");
         creditCard.add(bankName, "right");
         creditCard.add(new JLabel("Amount of money:"), "gapy 15");
         creditCard.add(moneyLabel, "wrap");
@@ -149,4 +175,5 @@ public class SidePanel extends JPanel {
 
     private JButton signOutButton;
     private JLabel username;
+    private User user = new User();
 }

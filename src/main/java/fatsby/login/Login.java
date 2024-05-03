@@ -73,6 +73,7 @@ public class Login extends JPanel {
             if (loginMechanics.checkLogin(username, password)) {
                 JOptionPane.showMessageDialog(this, "Welcome, " + username);
                 try {
+                    currentUser = username;
                     FormsManager.getInstance().showForm(new SidePanel());
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
@@ -86,6 +87,11 @@ public class Login extends JPanel {
                 }
             } else{
                 JOptionPane.showMessageDialog(this, "Invalid username or password");
+                try {
+                    rememberMe.rememberWrite(username, false);
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
         });
     }
@@ -112,4 +118,5 @@ public class Login extends JPanel {
     private JPasswordField txtPassword;
     private JCheckBox chkRemember;
     private JButton btnLogin;
+    public static String currentUser;
 }

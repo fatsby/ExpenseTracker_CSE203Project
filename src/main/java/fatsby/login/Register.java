@@ -2,6 +2,7 @@ package fatsby.login;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import fatsby.manager.FormsManager;
+import fatsby.manager.User;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
@@ -85,8 +86,9 @@ public class Register extends JPanel {
             if (!password.equals(confirmPassword)) {
                 JOptionPane.showMessageDialog(null, "Password and confirm password do not match");
                 return; // Stop further processing if the passwords don't match
-            } else{
+            } else{ //SUCCESSFUL REGISTER
                 loginMechanics.saveRegistrationInfo(username, password);
+                User user = new User(username, 0);
                 JOptionPane.showMessageDialog(null, "Successfully registered");
             }
         });
