@@ -4,6 +4,8 @@ import com.formdev.flatlaf.FlatClientProperties;
 import fatsby.main.SidePanel;
 import fatsby.manager.FormsManager;
 import net.miginfocom.swing.MigLayout;
+import org.kordamp.ikonli.dashicons.Dashicons;
+import org.kordamp.ikonli.swing.FontIcon;
 
 import javax.swing.*;
 import java.awt.*;
@@ -19,6 +21,20 @@ public class Login extends JPanel {
         txtPassword = new JPasswordField();
         btnLogin = new JButton("Login");
         chkRemember = new JCheckBox("Remember me");
+
+
+        JLabel usernameLabel = new JLabel("Username:");
+        FontIcon userIcon = FontIcon.of(Dashicons.ADMIN_USERS);
+        userIcon.setIconSize(16);
+        userIcon.setIconColor(Color.white);
+        usernameLabel.setIcon(userIcon);
+
+        JLabel passwordLabel = new JLabel("Password:");
+        FontIcon passwordIcon = FontIcon.of(Dashicons.LOCK);
+        passwordIcon.setIconSize(16);
+        passwordIcon.setIconColor(Color.white);
+        passwordLabel.setIcon(passwordIcon);
+
         JPanel panel1 = new JPanel(new MigLayout("wrap,fillx,insets 35 45 30 45", "fill,250:280"));
         panel1.putClientProperty(FlatClientProperties.STYLE,"" +
                 "arc:20;" +
@@ -40,9 +56,9 @@ public class Login extends JPanel {
                 "[dark]foreground:darken(@foreground,3%);");
         panel1.add(lbTitle);
         panel1.add(description);
-        panel1.add(new JLabel("Username:"), "gapy 10");
+        panel1.add(usernameLabel, "gapy 10");
         panel1.add(txtUsername);
-        panel1.add(new JLabel("Password:"), "gapy 10");
+        panel1.add(passwordLabel, "gapy 10");
         panel1.add(txtPassword);
         panel1.add(chkRemember,"grow 0, gapy 10");
         panel1.add(btnLogin, "gapy 10");
