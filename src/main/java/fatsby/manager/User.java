@@ -73,7 +73,11 @@ public class User {
     }
 
     public void loadMoneyFromDB() throws IOException {
-        if (file_money != null && file_money.exists()) {
+        String directoryPath = "src/main/java/fatsby/manager/users/" + username;
+        // Define the file path including the directory
+        String filePath = directoryPath + "/money.txt";
+        file_money = new File(filePath);
+        if (file_money.exists()) {
             try (BufferedReader br = new BufferedReader(new FileReader(file_money))) {
                 String value = br.readLine();
                 this.money = Integer.parseInt(value);

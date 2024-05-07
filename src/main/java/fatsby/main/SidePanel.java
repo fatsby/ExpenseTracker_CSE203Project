@@ -14,10 +14,11 @@ import org.kordamp.ikonli.swing.FontIcon;
 import org.kordamp.ikonli.websymbols.Websymbols;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.io.IOException;
 
-public class SidePanel extends JPanel {
+public class SidePanel extends JPanel implements MoneyAddedListener{
     public SidePanel() throws IOException {
         String currentUser = rememberMe.getUsername();
         if (Login.currentUser != null){
@@ -99,15 +100,11 @@ public class SidePanel extends JPanel {
             dashboardPanel.add(drawCreditCard(), "width 265, height 175");
 
             //EXPENSE BUTTON HERE IDIOT
-            JButton addExpenseBTN = new JButton("Add Expense");
-            dashboardPanel.add(addExpenseBTN, "wrap, gapy 10");
-            addExpenseBTN.addActionListener(e -> {
-                try {
-                    user.addMoney(1000);
-                } catch (IOException ex) {
-                    throw new RuntimeException(ex);
-                }
-            });
+        JButton addExpenseBTN = new JButton("Add Expense");
+        dashboardPanel.add(addExpenseBTN, "wrap, gapy 10, span, left");
+        addExpenseBTN.addActionListener(e -> {
+            ExpenseManager expenseManager = new ExpenseManager(this);
+        });
 
 
             //PREVIOUS EXPENSE SECTION HERE
@@ -119,7 +116,12 @@ public class SidePanel extends JPanel {
             JLabel prevExpenseLabel = new JLabel("Previous Expenses");
             prevExpenseLabel.putClientProperty(FlatClientProperties.STYLE,"font: bold +6");
             dashboardPanel.add(prevExpenseLabel);
-
+        String[] tableHead = {"Amount", "Reason", "Date"};
+        DefaultTableModel dtm = new DefaultTableModel(null, tableHead); // Initialize with column names
+        JTable table = new JTable(dtm);
+        table.setVisible(true);
+        JScrollPane scrollPane = new JScrollPane(table);
+        dashboardPanel.add(scrollPane, "growx, span");  // add the JScrollPane to the dashboardPanel instead of the table
 
             JPanel anotherPanel = new JPanel(new BorderLayout());
             anotherPanel.add(new JLabel("Another Content"), BorderLayout.CENTER);
@@ -150,7 +152,7 @@ public class SidePanel extends JPanel {
         add(contentPanel, "grow, push");
     }
 
-    private Component drawCreditCard(){
+        private Component drawCreditCard(){
         JPanel creditCard = new JPanel(new MigLayout("wrap", "fill"));
         creditCard.putClientProperty(FlatClientProperties.STYLE, "arc:20;" +
                 "[light]background:darken(@background,3%);" +
@@ -161,8 +163,8 @@ public class SidePanel extends JPanel {
         JLabel bankName = new JLabel("MB BANK");
         bankName.putClientProperty(FlatClientProperties.STYLE, "font: bold +5");
         bankName.setIcon(visaIcon);
-//        JLabel moneyLabel = new JLabel(String.valueOf(user.getMoney())); // MONEY LABEL HERE IDIOT
-        JLabel moneyLabel = new JLabel("$10000");
+        moneyLabel = new JLabel("$" + user.getMoney()); // MONEY LABEL HERE IDIOT
+//        JLabel moneyLabel = new JLabel("$10000");
         creditCard.add(bankName, "right");
         creditCard.add(new JLabel("Amount of money:"), "gapy 15");
         creditCard.add(moneyLabel, "wrap");
@@ -170,10 +172,25 @@ public class SidePanel extends JPanel {
         JLabel ccNum = new JLabel("1234   5678   876   5432");
         ccNum.putClientProperty(FlatClientProperties.STYLE,"font: +5");
         creditCard.add(ccNum, "gapy 15");
+
         return creditCard;
     }
 
     private JButton signOutButton;
     private JLabel username;
     private User user = new User();
+    private JLabel moneyLabel;
+
+
+    @Override
+    public void onMoneyAdded(int amount) {
+        SwingUtilities.invokeLater(() -> {
+            try {
+                user.addMoney(amount);
+                moneyLabel.setText("$" + user.getMoney());
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        });
+    }
 }
